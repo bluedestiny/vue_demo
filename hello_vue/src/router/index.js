@@ -7,6 +7,9 @@ import tooltip from '@/components/tooltipComponent';
 import search from "../components/searchComponent";
 import select from "../components/selectComponent";
 import carousel from '@/components/carouselComponent';
+import layout from '@/components/layoutComponent';
+import icon from '@/components/iconComponent';
+import button from '@/components/buttonComponent';
 Vue.use(Router)
 
 export default new Router({
@@ -45,6 +48,21 @@ export default new Router({
       path: '/carousel',
       name: 'carousel',
       component: carousel
+    },
+    {
+      path: '/layout',
+      name: 'layout',
+      component: layout
+    },
+    {
+      path: '/icon',
+      name: 'icon',
+      component: icon
+    },
+    {
+      path: '/button',
+      name: 'button',
+      component: button
     }
   ]
 })

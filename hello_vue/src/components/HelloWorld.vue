@@ -1,6 +1,9 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
+    <div v-for="site in info">
+      {{site.name}}
+    </div>
     <h2>Essential Links</h2>
     <button class="btn btn-primary">主要的</button>
     <button class="btn btn-success">成功的</button>
@@ -15,6 +18,9 @@
     <router-link to="/search">搜索</router-link>
     <router-link to="/select">下拉框</router-link>
     <router-link to="/carousel">轮播图</router-link>
+    <router-link to="/layout">布局</router-link>
+    <router-link to="/icon">图标</router-link>
+    <router-link to="/button">按钮</router-link>
     <ul>
       <li>
         <a
@@ -108,8 +114,17 @@ export default {
   name: 'HelloWorld',
   data () {
     return {
+      info: '',
       msg: 'Welcome to Your Vue.js App'
     }
+  },
+  mounted () {
+      this.$axios
+          .get('/ajax/json_demo.json?id=test')
+          .then(response => (this.info = response.data.sites))
+          .catch(function (error) { // 请求失败处理
+              console.log(error);
+          });
   }
 }
 </script>
