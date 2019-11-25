@@ -9,60 +9,179 @@ import select from "../components/selectComponent";
 import carousel from '@/components/carouselComponent';
 import layout from '@/components/layoutComponent';
 import icon from '@/components/iconComponent';
-import button from '@/components/buttonComponent';
+import button from '@/components/buttonComponent'
+import two from "../components/brotherTwoComponent";
+import login from '@/page/login'
+import userList from '@/page/userList';
+import nav from '@/components/navMenuComponent';
+import tab from '@/components/tabComponent';
+import nextStep from "../components/nextStepComponent";
+import drawer from '../components/drawerComponent';
+import tableComponent from "../components/tableComponent";
+import treeComponent from "../components/treeComponent";
+import child1 from '../components/child1Component';
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
+      path: '/hello',
+      name: 'hello',
+      component: HelloWorld,
+      children: [
+        {
+          path: 'child1/:id',
+          component: child1,
+          meta: {
+            title: '子页面1'
+          }
+        }
+      ]
+    },
+    {
+      path: '/tree',
+      name: 'tree',
+      component: treeComponent,
+      meta : {
+        title: '树形组件'
+      }
+    },
+    {
+      path: '/table',
+      name: 'table',
+      component: tableComponent,
+      meta: {
+        title: '表格组件'
+      }
+    },
+    {
+      path: '/next',
+      name: 'next',
+      component: nextStep,
+      meta: {
+        title: '下一步组件'
+      }
+
+    },
+    {
+      path: '/nav',
+      name: 'nav',
+      component: nav,
+      meta: {
+        title: '导航'
+      }
+    },
+    {
+      path: '/tab',
+      name: 'tab',
+      component: tab,
+      meta: {
+        title: '切换选项卡'
+      }
+    },
+    {
       path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
+      name: 'login',
+      component: login,
+      meta: {
+        title: '登录页面'
+      }
+    },
+    {
+      path: '/userList',
+      name: 'userList',
+      component: userList,
+      meta: {
+        title: '用户列表'
+      }
     },
     {
       path: '/testDialog',
       name: 'testDialog',
-      component: dialog
+      component: dialog,
+      meta: {
+        title: '弹出对话框'
+      }
     },
     {
       path: '/comment',
       name: 'comment',
-      component: commentList
+      component: commentList,
+      meta: {
+        title: '评论列表'
+      }
     },
     {
-      path: '/tooltip',
+      path: '/drawer',
+      name: 'drawer',
+      component: drawer,
+      meta: {
+        title: '抽屉'
+      }
+    },
+    {
+      path: '/tooltip/:userId',
       name: 'tooltip',
-      component: tooltip
+      component: tooltip,
+      meta: {
+        title: '提示'
+      }
     },
     {
       path: '/search',
       name: 'search',
-      component: search
+      component: search,
+      meta: {
+        title: '搜索框'
+      }
     },
     {
       path: '/select',
       name: 'select',
-      component: select
+      component: select,
+      meta: {
+        title: '下拉选择框'
+      }
     },
     {
       path: '/carousel',
       name: 'carousel',
-      component: carousel
+      component: carousel,
+      meta: {
+        title: '轮播图'
+      }
     },
     {
       path: '/layout',
       name: 'layout',
-      component: layout
+      component: layout,
+      meta: {
+        title: '布局'
+      }
     },
     {
       path: '/icon',
       name: 'icon',
-      component: icon
+      component: icon,
+      meta: {
+        title: '图标'
+      }
     },
     {
       path: '/button',
       name: 'button',
-      component: button
+      component: button,
+      meta: {
+        title: '按钮'
+      }
+    },
+    {
+      path: '/two',
+      name: 'two',
+      component: two,
+      meta: {
+        title: 'two'
+      }
     }
   ]
 })

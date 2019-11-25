@@ -39,6 +39,8 @@ export default {
         //     count: 'count'
         // })
     },
+    created: function () {
+    },
     methods: {
         handleAddClick(n){
             this.$store.commit('a/mutationsAddCount',n);

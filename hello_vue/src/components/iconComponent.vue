@@ -4,14 +4,23 @@
     <i class="el-icon-share"></i>
     <i class="el-icon-delete"></i>
     <el-button type="primary" icon="el-icon-search">搜索</el-button>
+    <one></one>
+<!--    <two></two>-->
   </div>
 
 
 </template>
 
 <script>
+  import brotherOne from "./brotherOneComponent";
+  import brotherTwo from "./brotherTwoComponent";
   export default {
-
+      components: {
+          'one': brotherOne,
+          'two': brotherTwo
+      },
+      created: function () {
+      }
   }
 </script>
 

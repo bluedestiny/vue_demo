@@ -1,104 +1,31 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <div v-for="site in info">
-      {{site.name}}
-    </div>
     <h2>Essential Links</h2>
-    <button class="btn btn-primary">主要的</button>
-    <button class="btn btn-success">成功的</button>
-    <button class="btn btn-danger">危险的<span class="badge badge-light">12</span></button>
-    <hr/>
-
+    <!-- 子路由视图 -->
+    <transition name="slide-left">
+      <router-view></router-view>
+    </transition>
     <div id="flip">点我滑下面板</div>
-    <div id="panel">Hello world!</div>
-    <router-link to="/testDialog">test</router-link>
-    <router-link to="/comment">评论页面</router-link>
-    <router-link to="/tooltip">提示</router-link>
-    <router-link to="/search">搜索</router-link>
-    <router-link to="/select">下拉框</router-link>
-    <router-link to="/carousel">轮播图</router-link>
-    <router-link to="/layout">布局</router-link>
-    <router-link to="/icon">图标</router-link>
-    <router-link to="/button">按钮</router-link>
-    <ul>
-      <li>
-        <a
-          href="https://vuejs.org"
-          target="_blank"
-        >
-          Core Docs
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://forum.vuejs.org"
-          target="_blank"
-        >
-          Forum
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://chat.vuejs.org"
-          target="_blank"
-        >
-          Community Chat
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://twitter.com/vuejs"
-          target="_blank"
-        >
-          Twitter
-        </a>
-      </li>
-      <br>
-      <li>
-        <a
-          href="http://vuejs-templates.github.io/webpack/"
-          target="_blank"
-        >
-          Docs for This Template
-        </a>
-      </li>
-    </ul>
-    <h2>Ecosystem</h2>
-    <ul>
-      <li>
-        <a
-          href="http://router.vuejs.org/"
-          target="_blank"
-        >
-          vue-router
-        </a>
-      </li>
-      <li>
-        <a
-          href="http://vuex.vuejs.org/"
-          target="_blank"
-        >
-          vuex
-        </a>
-      </li>
-      <li>
-        <a
-          href="http://vue-loader.vuejs.org/"
-          target="_blank"
-        >
-          vue-loader
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/awesome-vue"
-          target="_blank"
-        >
-          awesome-vue
-        </a>
-      </li>
-    </ul>
+    <div id="panel">这是用jquery操作的</div>
+    <div class="routePage">
+      <router-link to="/testDialog">test</router-link>
+      <router-link to="/comment">评论页面</router-link>
+      <router-link :to="{ name : 'tooltip', params : { userId : 123 }}">提示</router-link>
+      <router-link :to="{path: '/search', query : { userId : 456 }}">搜索</router-link>
+      <router-link to="/select">布局</router-link>
+      <router-link to="/carousel">轮播图</router-link>
+      <router-link to="/layout">导航菜单</router-link>
+      <router-link to="/icon">图标</router-link>
+      <router-link to="/button">按钮</router-link>
+      <router-link to="/two">老二兄弟</router-link>
+      <router-link to="/table">分页案例</router-link>
+      <router-link to="/tab">tab切换</router-link>
+      <router-link to="/tree">树形组件</router-link>
+      <router-link to="/next">分步骤组件</router-link>
+
+    </div>
+
   </div>
 </template>
 
@@ -156,5 +83,54 @@ a {
 {
   padding:50px;
   display:none;
+}
+  .routePage{
+    height: 100px;
+    margin: 25px auto;
+    width: 50%;
+    border: 1px solid #D3DCE6;
+  }
+  .routePage a{
+    float: left;
+    margin: 5px;
+    width: 80px;
+    height: 25px;
+    color: white;
+    background: mediumseagreen;
+    display: block;
+
+  }
+  a:hover{
+    background: #007bff;
+  }
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+.slide-right-enter-active,
+.slide-right-leave-active,
+.slide-left-enter-active,
+.slide-left-leave-active {
+  will-change: transform;
+  transition: all 500ms;
+  position: absolute;
+}
+.slide-right-enter {
+  opacity: 0;
+  transform: translate3d(-100%, 0, 0);
+}
+.slide-right-leave-active {
+  opacity: 0;
+  transform: translate3d(100%, 0, 0);
+}
+.slide-left-enter {
+  opacity: 0;
+  transform: translate3d(100%, 0, 0);
+}
+.slide-left-leave-active {
+  opacity: 0;
+  transform: translate3d(-100%, 0, 0);
 }
 </style>
