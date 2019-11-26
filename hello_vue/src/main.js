@@ -9,11 +9,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import axios from 'axios';
 import store from "./store/store";
 Vue.config.productionTip = false
-axios.defaults.baseURL = 'http://localhost:3000';
-Vue.use(ElementUI);
-Vue.prototype.$axios = axios
 //axios.defaults.baseURL = '/try'
 //axios.defaults.headers.post['Content-Type'] = 'application/json';
+//axios.defaults.baseURL = '/api';
+Vue.use(ElementUI);
+Vue.prototype.$axios = axios
 Vue.config.productionTip = false
 /* eslint-disable no-new */
 export const eventBus = new Vue();

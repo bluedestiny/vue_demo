@@ -11,18 +11,18 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/try':{
-        target: 'https://www.runoob.com/try',
+      '/api':{
+        target: 'http://192.168.48.1:8080',
         changeOrigin: true,
         pathRewrite: {
-          '^/try': ''
+          '^/api': '/maven_ssm'
         }
       }
     },
 
     // Various Dev Server settings
-    host: 'localhost', // can be overwritten by process.env.HOST
-    port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
+    host: '192.168.48.1', // can be overwritten by process.env.HOST
+    port: 8082, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,
     notifyOnErrors: true,

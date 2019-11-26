@@ -43,14 +43,11 @@
                     <el-button type="primary" @click="saveUser">确 定</el-button>
                   </div>
                 </el-dialog>
-                <user-table :table-data="tableData" :total="total" :pageSize="pageSize" :currentPage="currentPage" @getPageData = 'getPageData' @changePageSize="changePageSize"></user-table>
+                <user-table :tableData="tableData" :total="total" :pageSize="pageSize" :currentPage="currentPage" @getPageData = 'getPageData' @changePageSize="changePageSize"></user-table>
               </div>
           </el-col>
         </el-row>
-
-
       </div>
-
     </div>
 </template>
 <script>
@@ -94,35 +91,54 @@
       created() {
           // 请求后台数据
           let params = {
-              curPage: 1,
+              currentIndex: 1,
               pageSize: this.pageSize
           };
-           this.$axios.post('/data', params).then((response) => {
-               console.log(response.data);
-               this.tableData = response.data.tableData;
-               this.total = response.data.total;
-           });
+          this.$axios.get('/api/UserCRUD/showUser', {
+              params: params
+          }).then((response) => {
+              console.log(this);
+              this.tableData = response.data.tableData;
+              this.total = response.data.total;
+          });
       },
       methods: {
+          queryTable: function() {
+              let params = {
+                  currentIndex: 1,
+                  pageSize: this.pageSize
+              };
+              // 注意get传参的方式
+              this.$axios.get('/api/UserCRUD/showUser', {
+                  params: params
+              }).then((response) => {
+
+                  this.tableData = response.data.tableData;
+                  this.total = response.data.total;
+              });
+
+          },
           getPageData: function(curPage){
               this.currentPage = curPage;
               let params = {
-                  curPage: curPage,
+                  currentIndex: curPage,
                   pageSize: this.pageSize
               };
-              this.$axios.post('/data', params).then((response) => {
-                  console.log(response.data);
+              this.$axios.get('/api/UserCRUD/showUser', {
+                  params: params
+              }).then((response) => {
                   this.tableData = response.data.tableData;
               });
           },
           changePageSize: function(pageSize){
               this.pageSize = pageSize;
               let params = {
-                  curPage: this.currentPage,
+                  currentIndex: this.currentPage,
                   pageSize: pageSize
               };
-              this.$axios.post('/data', params).then((response) => {
-                  console.log(response.data);
+              this.$axios.get('/api/UserCRUD/showUser', {
+                  params: params
+              }).then((response) => {
                   this.tableData = response.data.tableData;
               });
           },
@@ -142,15 +158,29 @@
           saveUser: function(){
               this.dialogFormVisible = false;
               if(this.methodFlag == 'add'){
-                  const user = {
-                      id: this.tableData.length === 0 ? 0 : this.tableData[this.tableData.length - 1].id + 1,
-                      date: moment().format('YYYY-MM-DD'),
-                      name: this.form.name,
-                      address: this.form.region,
-                  };
-                  this.tableData.push(user);
-                  this.$axios.post('/add', user).then((response) => {
-                      console.log(response);
+                  // const user = {
+                  //     id: this.tableData.length === 0 ? 0 : this.tableData[this.tableData.length - 1].id + 1,
+                  //     userName: this.form.name,
+                  //     passWord: this.form.region,
+                  // };
+                  // var form = new FormData();
+                  // form.append('userId', this.tableData.length === 0 ? 0 : this.tableData[this.tableData.length - 1].id + 1);
+                  // form.append('userName', this.form.name);
+                  // form.append('passWord', this.form.region);
+                  //
+                  // let config = {
+                  //     headers: {'Content-Type': 'multipart/form-data'}
+                  // }; //添加请求头
+                  // 注意post传参的方式
+                  var form = new URLSearchParams();
+                  form.append('userId', this.tableData.length === 0 ? 0 : this.tableData[this.tableData.length - 1].id + 1);
+                  form.append('userName', this.form.name);
+                  form.append('passWord', this.form.region);
+
+                  this.$axios.post('/api/UserCRUD/addUser', form).then((response) => {
+                      this.queryTable();
+                      this.currentPage = 1;
+                      console.log(this.total);
                   });
               }else {
                   this.user.name = this.form.name;
@@ -161,20 +191,33 @@
               }
           },
           delUser: function(row) {
-
+              console.log(row);
               this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
                   confirmButtonText: '确定',
                   cancelButtonText: '取消',
                   type: 'warning',
               }).then(() => {
-                  this.tableData = this.tableData.filter(v => v.id !== row.id);
-                  this.$axios.post('/delete', row).then((response) => {
-                      console.log(response);
+                  console.log(row.id);
+                  console.log(this.tableData);
+                  debugger
+                  this.tableData = this.tableData.filter(v => v.id != row.id);
+                  // var form = new FormData();
+                  // form.append('userId', row.id);
+                  //
+                  // let config = {
+                  //     headers: {'Content-Type': 'multipart/form-data'}
+                  // }; //添加请求头
+                  var form = new URLSearchParams();
+                  form.append('userId', row.id);
+                  this.$axios.post('/api/UserCRUD/delUser', form).then((response) => {
+                      this.queryTable();
+                      this.currentPage = 1;
                   });
                   this.$message({
                       type: 'success',
                       message: '删除成功!',
                   });
+
               }).catch(() => {
                   this.$message({
                       type: 'info',

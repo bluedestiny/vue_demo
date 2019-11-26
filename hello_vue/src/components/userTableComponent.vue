@@ -5,17 +5,17 @@
         border
         style="width: 100%">
         <el-table-column
-          prop="date"
-          label="日期"
+          prop="id"
+          label="id"
           width="180">
         </el-table-column>
         <el-table-column
-          prop="name"
+          prop="userName"
           label="姓名"
           width="180">
         </el-table-column>
         <el-table-column
-          prop="address"
+          prop="passWord"
           label="地址">
         </el-table-column>
         <el-table-column

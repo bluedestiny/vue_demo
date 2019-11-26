@@ -70,10 +70,11 @@ app.post('/data', (req, res) => {
 
 app.post('/delete', (req, res) => {
   let user = req.body;
+  console.log(user.id);
   for (let i = 0; i < users.length; i++) {
-    console.log(users[i]);
     if (users[i].id === user.id) {
       users.splice(i, 1);
+      console.log(users);
       break;
     }
   }
