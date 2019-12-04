@@ -5,9 +5,14 @@
       <div class="userTable">
         <el-row>
           <el-col :span="4">
-              <div class="grid-content bg-purple-dark">
-                  <el-button type="primary" @click="addUser">添加用户</el-button>
-              </div>
+            <el-input v-model="userName" autocomplete="on" ></el-input>
+
+          </el-col>
+          <el-col :span="4">
+                <el-button type="primary" @click="search">搜索</el-button>
+          </el-col>
+          <el-col :span="4">
+            <el-button type="primary" @click="addUser">添加用户</el-button>
           </el-col>
         </el-row>
         <el-row>
@@ -43,6 +48,7 @@
                     <el-button type="primary" @click="saveUser">确 定</el-button>
                   </div>
                 </el-dialog>
+
                 <user-table :tableData="tableData" :total="total" :pageSize="pageSize" :currentPage="currentPage" @getPageData = 'getPageData' @changePageSize="changePageSize"></user-table>
               </div>
           </el-col>
@@ -61,6 +67,7 @@
   export default {
       data: function(){
           return {
+              userName: '',
               user: {},
               total: 0,
               pageSize: 2,
@@ -103,9 +110,26 @@
           });
       },
       methods: {
+          // 搜索
+          search: function(){
+              let params = {
+                  userName: this.userName,
+                  currentIndex: 1,
+                  pageSize: this.pageSize
+              }
+              this.$axios.get('/api/UserCRUD/showUser', {
+                  params: params
+              }).then((response) => {
+                  this.tableData = response.data.tableData;
+                  this.total = response.data.total;
+                  this.currentPage = 1;
+              });
+          },
+
           queryTable: function() {
               let params = {
                   currentIndex: 1,
+                  userName: this.userName,
                   pageSize: this.pageSize
               };
               // 注意get传参的方式
@@ -118,9 +142,11 @@
               });
 
           },
+          //  查询当前页的数据
           getPageData: function(curPage){
               this.currentPage = curPage;
               let params = {
+                  userName: this.userName,
                   currentIndex: curPage,
                   pageSize: this.pageSize
               };
@@ -130,9 +156,11 @@
                   this.tableData = response.data.tableData;
               });
           },
+          // 更改分页大小时查询分页数据
           changePageSize: function(pageSize){
               this.pageSize = pageSize;
               let params = {
+                  userName: this.userName,
                   currentIndex: this.currentPage,
                   pageSize: pageSize
               };
@@ -142,19 +170,24 @@
                   this.tableData = response.data.tableData;
               });
           },
+          // 添加用户
           addUser: function(){
               this.methodFlag='add';
               this.dialogFormVisible = true;
               this.form.name = "";
               this.form.region= "";
           },
+          // 通过vuex通信
           showUser(row) {
               this.dialogForm2Visible = true;
-              this.form.name = row.name;
-              this.form.region= row.address;
+              this.form.name = row.userName;
+              this.form.region= row.passWord;
               console.log(row);
+
+
               this.$store.commit('user/changeMethodName','');
           },
+          // 保存用户
           saveUser: function(){
               this.dialogFormVisible = false;
               if(this.methodFlag == 'add'){
@@ -183,13 +216,28 @@
                       console.log(this.total);
                   });
               }else {
-                  this.user.name = this.form.name;
-                  this.user.address = this.form.region;
-                  this.$axios.post('/edit', this.user).then((response) => {
+                  this.user.userName = this.form.name;
+                  this.user.passWord = this.form.region;
+                  var form = new URLSearchParams();
+                  form.append("userName", this.user.userName);
+                  form.append("id", this.user.id);
+                  form.append("passWord", this.user.passWord);
+                  this.$axios.post('/api/UserCRUD/editUser', form).then((response) => {
                       console.log(response);
+                      this.$message({
+                          type: 'success',
+                          message: '修改成功!',
+                      });
+                  }).catch(err =>{
+                      console.log(err);
+                      this.$message({
+                          type: 'success',
+                          message: '修改失败!',
+                      });
                   });
               }
           },
+          // 删除用户
           delUser: function(row) {
               console.log(row);
               this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
@@ -199,7 +247,6 @@
               }).then(() => {
                   console.log(row.id);
                   console.log(this.tableData);
-                  debugger
                   this.tableData = this.tableData.filter(v => v.id != row.id);
                   // var form = new FormData();
                   // form.append('userId', row.id);
@@ -226,12 +273,14 @@
               });
               this.$store.commit('user/changeMethodName','');
           },
+          // 编辑用户
           editUser: function(row){
               this.methodFlag='edit';
               this.dialogFormVisible=true;
-              this.form.name = row.name;
-              this.form.region = row.address;
+              this.form.name = row.userName;
+              this.form.region = row.passWord;
               this.user = row;
+
               this.$store.commit('user/changeMethodName','');
           }
       },

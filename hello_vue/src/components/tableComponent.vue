@@ -4,47 +4,32 @@
       :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
       style="width: 100%">
       <el-table-column
+        v-if="hasSelection"
+
         type="selection"
         width="55">
       </el-table-column>
+      <!--序号-->
+      <el-table-column v-if="hasIndex" label="序号" type="index" width="55">
+
+      </el-table-column>
       <el-table-column
-        prop="appname"
-        label="APP名称"
+        v-for="(column, index) in columns"
+        v-if="column.isShow"
+        :prop="column.prop"
+        :label="column.label"
+        :key="column.prop"
         sortable
-        width="180">
+        :width="column.width">
       </el-table-column>
-      <el-table-column
-        prop="apkname"
-        label="包名"
-        width="180">
-      </el-table-column>
-      <el-table-column
-        prop="type"
-        sortable
-        label="类型">
-      </el-table-column>
-      <el-table-column
-        prop="comp_name"
-        sortable
-        label="运营企业名称">
-      </el-table-column>
-      <el-table-column
-        prop="type_number"
-        label="版本号">
-      </el-table-column>
-      <el-table-column
-        prop="update_date"
-        sortable
-        label="更新时间">
-      </el-table-column>
-      <el-table-column
-        prop="download_num"
-        sortable
-        label="下载量（万）">
-      </el-table-column>
+      <!--操作-->
+      <slot name="handleColumn"></slot>
+
+
     </el-table>
     <div class="block">
       <el-pagination
+        v-if="hasPagination"
         background
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
@@ -59,166 +44,44 @@
 
 <script>
     export default {
+        props: {
+           // 是否支持多选
+          hasSelection: {
+              type: Boolean,
+              default: function(){
+                  return false;
+              }
+          },
+          hasPagination: {
+            type: Boolean,
+            default: function(){
+                return false;
+            }
+          },
+          hasIndex:  {
+              type: Boolean,
+              default: function() {
+                  return false;
+              }
+          },
+          columns: {
+              type: Array,
+              default: function(){
+                  return [];
+              }
+          },
+          tableData: {
+              type: Array,
+              default: function(){
+                  return [];
+              }
+          }
+        },
         data() {
             return {
-                total:1000,//默认数据总数
+                total: 100,//默认数据总数
                 pageSize:5,//每页的数据条数
                 currentPage:1,//默认开始页面
-                tableData: [
-                    {
-                        appname: '1喵喵直播',
-                        apkname: '1bdkdl',
-                        type: '3视频直播',
-                        comp_name: '1广大科技公司',
-                        type_number: '1V1.2',
-                        update_date: '12016-05-02',
-                        download_num: '123.6'
-                    },
-                    {
-                        appname: '2喵喵直播',
-                        apkname: '2bdkdl',
-                        type: '2视频直播',
-                        comp_name: '2广大科技公司',
-                        type_number: '2V1.2',
-                        update_date: '22016-05-02',
-                        download_num: '223.6'
-                    },
-                    {
-                        appname: '3喵喵直播',
-                        apkname: '1bdkdl',
-                        type: '3视频直播',
-                        comp_name: '3广大科技公司',
-                        type_number: '3V1.2',
-                        update_date: '32016-05-02',
-                        download_num: '323.6'
-                    },
-                    {
-                        appname: '4喵喵直播',
-                        apkname: '4bdkdl',
-                        type: '4视频直播',
-                        comp_name: '4广大科技公司',
-                        type_number: '4V1.2',
-                        update_date: '42016-05-02',
-                        download_num: '423.6'
-                    },
-                    {
-                        appname: '5喵喵直播',
-                        apkname: '4bdkdl',
-                        type: '4视频直播',
-                        comp_name: '4广大科技公司',
-                        type_number: '4V1.2',
-                        update_date: '42016-05-02',
-                        download_num: '423.6'
-                    },
-                    {
-                        appname: '6喵喵直播',
-                        apkname: '4bdkdl',
-                        type: '4视频直播',
-                        comp_name: '4广大科技公司',
-                        type_number: '4V1.2',
-                        update_date: '42016-05-02',
-                        download_num: '423.6'
-                    },
-                    {
-                        appname: '7喵喵直播',
-                        apkname: '4bdkdl',
-                        type: '4视频直播',
-                        comp_name: '4广大科技公司',
-                        type_number: '4V1.2',
-                        update_date: '42016-05-02',
-                        download_num: '423.6'
-                    },
-                    {
-                        appname: '8喵喵直播',
-                        apkname: '4bdkdl',
-                        type: '4视频直播',
-                        comp_name: '4广大科技公司',
-                        type_number: '4V1.2',
-                        update_date: '42016-05-02',
-                        download_num: '423.6'
-                    },
-                    {
-                        appname: '9喵喵直播',
-                        apkname: '4bdkdl',
-                        type: '4视频直播',
-                        comp_name: '4广大科技公司',
-                        type_number: '4V1.2',
-                        update_date: '42016-05-02',
-                        download_num: '423.6'
-                    },
-                    {
-                        appname: '10喵喵直播',
-                        apkname: '4bdkdl',
-                        type: '4视频直播',
-                        comp_name: '4广大科技公司',
-                        type_number: '4V1.2',
-                        update_date: '42016-05-02',
-                        download_num: '423.6'
-                    },
-                    {
-                        appname: '11喵喵直播',
-                        apkname: '4bdkdl',
-                        type: '4视频直播',
-                        comp_name: '4广大科技公司',
-                        type_number: '4V1.2',
-                        update_date: '42016-05-02',
-                        download_num: '423.6'
-                    },
-                    {
-                        appname: '12喵喵直播',
-                        apkname: '4bdkdl',
-                        type: '4视频直播',
-                        comp_name: '4广大科技公司',
-                        type_number: '4V1.2',
-                        update_date: '42016-05-02',
-                        download_num: '423.6'
-                    },
-                    {
-                        appname: '13喵喵直播',
-                        apkname: '4bdkdl',
-                        type: '4视频直播',
-                        comp_name: '4广大科技公司',
-                        type_number: '4V1.2',
-                        update_date: '42016-05-02',
-                        download_num: '423.6'
-                    },
-                    {
-                        appname: '14喵喵直播',
-                        apkname: '4bdkdl',
-                        type: '4视频直播',
-                        comp_name: '4广大科技公司',
-                        type_number: '4V1.2',
-                        update_date: '42016-05-02',
-                        download_num: '423.6'
-                    },
-                    {
-                        appname: '15喵喵直播',
-                        apkname: '4bdkdl',
-                        type: '4视频直播',
-                        comp_name: '4广大科技公司',
-                        type_number: '4V1.2',
-                        update_date: '42016-05-02',
-                        download_num: '423.6'
-                    },
-                    {
-                        appname: '16喵喵直播',
-                        apkname: '4bdkdl',
-                        type: '4视频直播',
-                        comp_name: '4广大科技公司',
-                        type_number: '4V1.2',
-                        update_date: '42016-05-02',
-                        download_num: '423.6'
-                    },
-                    {
-                        appname: '17喵喵直播',
-                        apkname: '4bdkdl',
-                        type: '4视频直播',
-                        comp_name: '4广大科技公司',
-                        type_number: '4V1.2',
-                        update_date: '42016-05-02',
-                        download_num: '423.6'
-                    }
-                ]
             }
         },
         methods: {

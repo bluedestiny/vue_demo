@@ -14,12 +14,17 @@ import two from "../components/brotherTwoComponent";
 import login from '@/page/login'
 import userList from '@/page/userList';
 import nav from '@/components/navMenuComponent';
+import testNavComponent from "../components/testNavComponent";
 import tab from '@/components/tabComponent';
 import nextStep from "../components/nextStepComponent";
 import drawer from '../components/drawerComponent';
-import tableComponent from "../components/tableComponent";
+import tableComponent from "../components/testTableComponent";
 import treeComponent from "../components/treeComponent";
 import child1 from '../components/child1Component';
+import slotComponent from "../components/slotComponent";
+import testSlotComponent from "../components/testSlotComponent";
+import axiosTestComponent from "../components/axiosTestComponent";
+import chartComponent from "../components/chartComponent";
 Vue.use(Router)
 
 export default new Router({
@@ -47,6 +52,27 @@ export default new Router({
       }
     },
     {
+      path: '/chart',
+      name: 'chart',
+      component: chartComponent
+    },
+    {
+      path: '/testAxios',
+      name: 'testAxios',
+      component: axiosTestComponent,
+      meta: {
+        title: '测试请求'
+      }
+    },
+    {
+      path: '/slot',
+      name: 'slot',
+      component: testSlotComponent,
+      meta: {
+        title: '插槽'
+      }
+    },
+    {
       path: '/table',
       name: 'table',
       component: tableComponent,
@@ -66,7 +92,7 @@ export default new Router({
     {
       path: '/nav',
       name: 'nav',
-      component: nav,
+      component: testNavComponent,
       meta: {
         title: '导航'
       }

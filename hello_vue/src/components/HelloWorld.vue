@@ -23,7 +23,9 @@
       <router-link to="/tab">tab切换</router-link>
       <router-link to="/tree">树形组件</router-link>
       <router-link to="/next">分步骤组件</router-link>
-
+      <router-link to="/slot">插槽</router-link>
+      <router-link to="/testAxios">测试请求</router-link>
+      <router-link to="/chart">图表组件</router-link>
     </div>
 
   </div>
